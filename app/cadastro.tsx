@@ -1,11 +1,16 @@
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { router } from "expo-router";
 
-export default function Index() {
+export default function Cadastro() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Criar Conta</Text>
       
+      <TextInput 
+        style={styles.input} 
+        placeholder="Nome completo" 
+      />
+
       <TextInput 
         style={styles.input} 
         placeholder="E-mail" 
@@ -15,16 +20,23 @@ export default function Index() {
       
       <TextInput 
         style={styles.input} 
-        placeholder="Palavra-passe" 
+        placeholder="Senha" 
+        secureTextEntry
+      />
+
+      <TextInput 
+        style={styles.input} 
+        placeholder="Confirmar Senha" 
         secureTextEntry
       />
       
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Entrar</Text>
+        <Text style={styles.buttonText}>Cadastrar</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.linkButton} onPress={() => router.push('/cadastro')}>
-        <Text style={styles.linkText}>Não tem conta? Registe-se</Text>
+      {/* Botão para voltar para a tela de Login */}
+      <TouchableOpacity style={styles.linkButton} onPress={() => router.back()}>
+        <Text style={styles.linkText}>Já tem conta? Entre aqui</Text>
       </TouchableOpacity>
     </View>
   );
