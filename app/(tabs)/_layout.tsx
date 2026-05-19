@@ -5,12 +5,21 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#2563eb",
+        tabBarActiveTintColor: "#F59E0B", // Cor laranja do protótipo
         tabBarInactiveTintColor: "#6b7280",
-        tabBarStyle: { backgroundColor: "#ffffff" },
+        tabBarStyle: { backgroundColor: "#ffffff", height: 60 },
         headerShown: false,
       }}
     >
+      <Tabs.Screen
+        name="integradores"
+        options={{
+          title: "Cotações",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="cash-outline" size={size} color={color} />
+          ),
+        }}
+      />
       <Tabs.Screen
         name="perfil"
         options={{

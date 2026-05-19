@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { router } from "expo-router";
+import FadeWrapper from "@/components/transitions/FadeWrapper";
 
 export default function Perfil() {
   return (
-    <View style={styles.container}>
+    <FadeWrapper style={styles.container}>
       <View style={styles.header}>
         <View style={styles.avatarPlaceholder}>
           <Text style={styles.avatarText}>A</Text>
@@ -25,7 +26,7 @@ export default function Perfil() {
           <Text style={styles.logoutText}>Sair</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </FadeWrapper>
   );
 }
 

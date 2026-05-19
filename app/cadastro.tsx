@@ -1,44 +1,25 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { router } from "expo-router";
+import FadeWrapper from "@/components/transitions/FadeWrapper";
 
 export default function Cadastro() {
   return (
-    <View style={styles.container}>
+    <FadeWrapper style={styles.container}>
       <Text style={styles.title}>Criar Conta</Text>
       
-      <TextInput 
-        style={styles.input} 
-        placeholder="Nome completo" 
-      />
-
-      <TextInput 
-        style={styles.input} 
-        placeholder="E-mail" 
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      
-      <TextInput 
-        style={styles.input} 
-        placeholder="Senha" 
-        secureTextEntry
-      />
-
-      <TextInput 
-        style={styles.input} 
-        placeholder="Confirmar Senha" 
-        secureTextEntry
-      />
+      <TextInput style={styles.input} placeholder="Nome completo" />
+      <TextInput style={styles.input} placeholder="E-mail" keyboardType="email-address" autoCapitalize="none" />
+      <TextInput style={styles.input} placeholder="Senha" secureTextEntry />
+      <TextInput style={styles.input} placeholder="Confirmar Senha" secureTextEntry />
       
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Cadastrar</Text>
       </TouchableOpacity>
 
-      {/* Botão para voltar para a tela de Login */}
       <TouchableOpacity style={styles.linkButton} onPress={() => router.back()}>
         <Text style={styles.linkText}>Já tem conta? Entre aqui</Text>
       </TouchableOpacity>
-    </View>
+    </FadeWrapper>
   );
 }
 

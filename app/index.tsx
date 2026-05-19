@@ -1,9 +1,10 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { router } from "expo-router";
+import FadeWrapper from "@/components/transitions/FadeWrapper"; 
 
 export default function Index() {
   return (
-    <View style={styles.container}>
+    <FadeWrapper style={styles.container}>
       <Text style={styles.title}>Login</Text>
       
       <TextInput 
@@ -15,18 +16,24 @@ export default function Index() {
       
       <TextInput 
         style={styles.input} 
-        placeholder="Palavra-passe" 
+        placeholder="Senha" 
         secureTextEntry
       />
       
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity 
+        style={styles.button} 
+        onPress={() => router.replace("/(tabs)/integradores")}
+      >
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.linkButton} onPress={() => router.push('/cadastro')}>
-        <Text style={styles.linkText}>Não tem conta? Registe-se</Text>
+      <TouchableOpacity 
+        style={styles.linkButton} 
+        onPress={() => router.push("/cadastro")}
+      >
+        <Text style={styles.linkText}>Não tem conta? Cadastre-se</Text>
       </TouchableOpacity>
-    </View>
+    </FadeWrapper>
   );
 }
 
