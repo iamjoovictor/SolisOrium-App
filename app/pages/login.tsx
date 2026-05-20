@@ -3,7 +3,7 @@ import { Text, TextInput, TouchableOpacity, View, ActivityIndicator } from "reac
 import { router } from "expo-router";
 import FadeWrapper from "@/components/transitions/FadeWrapper"; 
 // Importação do arquivo de estilos separado
-import { styles } from "../styles/loginStyles"; 
+import { styles } from "../../components/styles/login.styles"; 
 
 export default function Login() {
   const [perfil, setPerfil] = useState<"cliente" | "integrador" | "ponto">("cliente");

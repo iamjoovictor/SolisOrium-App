@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import FadeWrapper from "@/components/transitions/FadeWrapper";
 // Importação do estilo
-import { styles } from "./styles/index.styles";
+import { styles } from "../components/styles/index.styles";
 
 export default function Welcome() {
   const [isAppLoading, setIsAppLoading] = useState(true);

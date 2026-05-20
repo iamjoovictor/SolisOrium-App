@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import FadeWrapper from "@/components/transitions/FadeWrapper";
 // Importação do ficheiro de estilos separado
-import { styles } from "../styles/cadastroStyles";
+import { styles } from "../../components/styles/cadastro.styles";
 
 export default function Cadastro() {
   const [step, setStep] = useState(1);

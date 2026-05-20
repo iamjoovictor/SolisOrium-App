@@ -3,7 +3,7 @@ import { View, Text, FlatList, TextInput, TouchableOpacity } from "react-native"
 import { Ionicons } from "@expo/vector-icons";
 import FadeWrapper from "@/components/transitions/FadeWrapper";
 // Importação do estilo
-import { styles } from "../styles/integradores.styles";
+import { styles } from "../../components/styles/integradores.styles";
 
 const INTEGRADORES = Array.from({ length: 9 }).map((_, i) => ({
   id: i.toString(),

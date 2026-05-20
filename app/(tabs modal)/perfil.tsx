@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 import FadeWrapper from "@/components/transitions/FadeWrapper";
 // Importação do estilo separado
-import { styles } from "../styles/perfil.styles";
+import { styles } from "../../components/styles/perfil.styles";
 
 export default function Perfil() {
   return (
