@@ -1,67 +1,147 @@
-import { Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { Text, TextInput, TouchableOpacity, StyleSheet, View, ActivityIndicator } from "react-native";
 import { router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 import FadeWrapper from "@/components/transitions/FadeWrapper";
 
 export default function Cadastro() {
+  const [step, setStep] = useState(1);
+  const totalSteps = 4;
+
+  const [perfil, setPerfil] = useState<"cliente" | "integrador" | "ponto">("cliente");
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [documento, setDocumento] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
+  
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Lógica para liberar o botão de avançar de cada etapa
+  const canProceed = () => {
+    if (step === 1) return true;
+    if (step === 2) return nome.trim() !== "" && email.trim() !== "";
+    if (step === 3) return documento.trim() !== "";
+    if (step === 4) return senha.trim() !== "" && confirmarSenha.trim() !== "" && senha === confirmarSenha;
+    return false;
+  };
+
+  const handleNext = () => {
+    if (step < totalSteps) setStep(step + 1);
+  };
+
+  const handleBack = () => {
+    if (step > 1) setStep(step - 1);
+    else router.replace("/login");
+  };
+
+  const handleCadastro = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      router.replace("/(tabs modal)/integradores");
+    }, 1500);
+  };
+
+  // Cálculo da barra de progresso
+  const progressPercent = (step / totalSteps) * 100;
+
   return (
     <FadeWrapper style={styles.container}>
-      <Text style={styles.title}>Criar Conta</Text>
-      
-      <TextInput style={styles.input} placeholder="Nome completo" />
-      <TextInput style={styles.input} placeholder="E-mail" keyboardType="email-address" autoCapitalize="none" />
-      <TextInput style={styles.input} placeholder="Senha" secureTextEntry />
-      <TextInput style={styles.input} placeholder="Confirmar Senha" secureTextEntry />
-      
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Cadastrar</Text>
+      <TouchableOpacity style={styles.backButton} onPress={handleBack} disabled={isLoading}>
+        <Ionicons name="arrow-back" size={24} color="#111827" />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.linkButton} onPress={() => router.back()}>
-        <Text style={styles.linkText}>Já tem conta? Entre aqui</Text>
-      </TouchableOpacity>
+      <View style={styles.progressBarBackground}>
+        <View style={[styles.progressBarFill, { width: `${progressPercent}%` }]} />
+      </View>
+
+      <Text style={styles.title}>
+        {step === 1 && "Escolha seu Perfil"}
+        {step === 2 && "Dados Pessoais"}
+        {step === 3 && "Documento"}
+        {step === 4 && "Segurança"}
+      </Text>
+
+      <View style={styles.formContainer}>
+        {step === 1 && (
+          <View style={styles.selectorContainer}>
+            <TouchableOpacity style={[styles.selectorButton, perfil === "cliente" && styles.activeSelector]} onPress={() => setPerfil("cliente")}>
+              <Text style={[styles.selectorText, perfil === "cliente" && styles.activeSelectorText]}>Cliente</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.selectorButton, perfil === "integrador" && styles.activeSelector]} onPress={() => setPerfil("integrador")}>
+              <Text style={[styles.selectorText, perfil === "integrador" && styles.activeSelectorText]}>Integrador</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.selectorButton, perfil === "ponto" && styles.activeSelector]} onPress={() => setPerfil("ponto")}>
+              <Text style={[styles.selectorText, perfil === "ponto" && styles.activeSelectorText]}>Ponto</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {step === 2 && (
+          <>
+            <TextInput style={styles.input} placeholder="Nome completo" value={nome} onChangeText={setNome} />
+            <TextInput style={styles.input} placeholder="E-mail" keyboardType="email-address" autoCapitalize="none" value={email} onChangeText={setEmail} />
+          </>
+        )}
+
+        {step === 3 && (
+          <TextInput 
+            style={styles.input} 
+            placeholder={perfil === "cliente" ? "Digite seu CPF" : "Digite seu CNPJ"} 
+            keyboardType="numeric" 
+            value={documento} 
+            onChangeText={setDocumento} 
+          />
+        )}
+
+        {step === 4 && (
+          <>
+            <TextInput style={styles.input} placeholder="Senha" secureTextEntry value={senha} onChangeText={setSenha} />
+            <TextInput style={styles.input} placeholder="Confirmar Senha" secureTextEntry value={confirmarSenha} onChangeText={setConfirmarSenha} />
+            {senha !== confirmarSenha && confirmarSenha !== "" && (
+              <Text style={styles.errorText}>As senhas não coincidem.</Text>
+            )}
+          </>
+        )}
+      </View>
+
+      {step < totalSteps ? (
+        <TouchableOpacity 
+          style={[styles.button, !canProceed() && styles.buttonDisabled]} 
+          onPress={handleNext}
+          disabled={!canProceed()}
+        >
+          <Text style={styles.buttonText}>Confirmar</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity 
+          style={[styles.button, (!canProceed() || isLoading) && styles.buttonDisabled]} 
+          onPress={handleCadastro}
+          disabled={!canProceed() || isLoading}
+        >
+          {isLoading ? <ActivityIndicator color="#ffffff" /> : <Text style={styles.buttonText}>Cadastrar</Text>}
+        </TouchableOpacity>
+      )}
     </FadeWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 24,
-    backgroundColor: "#ffffff",
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    marginBottom: 40,
-    textAlign: "center",
-    color: "#111827",
-  },
-  input: {
-    backgroundColor: "#f3f4f6",
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 16,
-    fontSize: 16,
-  },
-  button: {
-    backgroundColor: "#2563eb",
-    padding: 16,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 8,
-  },
-  buttonText: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  linkButton: {
-    marginTop: 24,
-    alignItems: "center",
-  },
-  linkText: {
-    color: "#2563eb",
-    fontSize: 14,
-  },
+  container: { flex: 1, justifyContent: "center", padding: 24, backgroundColor: "#ffffff" },
+  backButton: { position: "absolute", top: 60, left: 24, zIndex: 10 },
+  progressBarBackground: { height: 8, backgroundColor: "#f3f4f6", borderRadius: 4, marginTop: 80, marginBottom: 40, overflow: "hidden" },
+  progressBarFill: { height: "100%", backgroundColor: "#F59E0B", borderRadius: 4 },
+  title: { fontSize: 28, fontWeight: "bold", marginBottom: 30, color: "#111827" },
+  formContainer: { minHeight: 180 },
+  selectorContainer: { flexDirection: "column", gap: 12 },
+  selectorButton: { paddingVertical: 16, alignItems: "center", borderRadius: 8, backgroundColor: "#f3f4f6", borderWidth: 1, borderColor: "transparent" },
+  activeSelector: { backgroundColor: "#eff6ff", borderColor: "#2563eb" },
+  selectorText: { fontSize: 16, color: "#4b5563", fontWeight: "500" },
+  activeSelectorText: { color: "#2563eb", fontWeight: "bold" },
+  input: { backgroundColor: "#f3f4f6", padding: 16, borderRadius: 8, marginBottom: 16, fontSize: 16 },
+  errorText: { color: "#ef4444", fontSize: 14, marginTop: -8, marginBottom: 16 },
+  button: { backgroundColor: "#2563eb", padding: 16, borderRadius: 8, alignItems: "center", marginTop: 8, height: 56, justifyContent: "center" },
+  buttonDisabled: { backgroundColor: "#93c5fd" },
+  buttonText: { color: "#ffffff", fontSize: 16, fontWeight: "bold" },
 });

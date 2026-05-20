@@ -1,38 +1,45 @@
-import { Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Text, TouchableOpacity, StyleSheet, View, ActivityIndicator } from "react-native";
 import { router } from "expo-router";
-import FadeWrapper from "@/components/transitions/FadeWrapper"; 
+import { Ionicons } from "@expo/vector-icons";
+import FadeWrapper from "@/components/transitions/FadeWrapper";
 
-export default function Index() {
+export default function Welcome() {
+  const [isAppLoading, setIsAppLoading] = useState(true);
+
+  useEffect(() => {
+    // Simula o carregamento inicial de recursos
+    const timer = setTimeout(() => setIsAppLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Tela de carregamento
+  if (isAppLoading) {
+    return (
+      <FadeWrapper style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#F59E0B" />
+      </FadeWrapper>
+    );
+  }
+
+  // Tela normal
   return (
     <FadeWrapper style={styles.container}>
-      <Text style={styles.title}>Login</Text>
-      
-      <TextInput 
-        style={styles.input} 
-        placeholder="E-mail" 
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      
-      <TextInput 
-        style={styles.input} 
-        placeholder="Senha" 
-        secureTextEntry
-      />
-      
-      <TouchableOpacity 
-        style={styles.button} 
-        onPress={() => router.replace("/(tabs)/integradores")}
-      >
-        <Text style={styles.buttonText}>Entrar</Text>
-      </TouchableOpacity>
+      <View style={styles.brandContainer}>
+        <View style={styles.iconCircle}>
+          <Ionicons name="sunny" size={50} color="#F59E0B" />
+        </View>
+        <Text style={styles.brandName}>Solis Orium</Text>
+        <Text style={styles.tagline}>
+          Incentivando a Mobilidade Elétrica e a Energia Solar por Meio da Tecnologia
+        </Text>
+      </View>
 
-      <TouchableOpacity 
-        style={styles.linkButton} 
-        onPress={() => router.push("/cadastro")}
-      >
-        <Text style={styles.linkText}>Não tem conta? Cadastre-se</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.primaryButton} onPress={() => router.push("/login")}>
+          <Text style={styles.primaryButtonText}>Começar</Text>
+        </TouchableOpacity>
+      </View>
     </FadeWrapper>
   );
 }
@@ -40,42 +47,55 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    padding: 24,
     backgroundColor: "#ffffff",
+    justifyContent: "space-between",
+    padding: 24,
   },
-  title: {
-    fontSize: 32,
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  brandContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 12,
+  },
+  iconCircle: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: "#FEF3C7",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  brandName: {
+    fontSize: 36,
     fontWeight: "bold",
-    marginBottom: 40,
-    textAlign: "center",
     color: "#111827",
-  },
-  input: {
-    backgroundColor: "#f3f4f6",
-    padding: 16,
-    borderRadius: 8,
     marginBottom: 16,
-    fontSize: 16,
   },
-  button: {
+  tagline: {
+    fontSize: 16,
+    color: "#4b5563",
+    textAlign: "center",
+    lineHeight: 24,
+  },
+  buttonContainer: {
+    marginBottom: 20,
+  },
+  primaryButton: {
     backgroundColor: "#2563eb",
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 12,
     alignItems: "center",
-    marginTop: 8,
   },
-  buttonText: {
+  primaryButtonText: {
     color: "#ffffff",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
-  },
-  linkButton: {
-    marginTop: 24,
-    alignItems: "center",
-  },
-  linkText: {
-    color: "#2563eb",
-    fontSize: 14,
   },
 });
