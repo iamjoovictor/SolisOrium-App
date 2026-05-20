@@ -22,7 +22,7 @@ export default function Perfil() {
           <Text style={styles.menuItemText}>Configurações</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.logoutButton} onPress={() => router.replace("/")}>
+        <TouchableOpacity style={styles.logoutButton} onPress={() => router.replace("/pages/login")}>
           <Text style={styles.logoutText}>Sair</Text>
         </TouchableOpacity>
       </View>
